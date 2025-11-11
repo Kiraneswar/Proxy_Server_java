@@ -1,6 +1,6 @@
-// Simplified Server
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class ProxyServer {
     public static void main(String[] args) throws IOException {
@@ -18,11 +18,11 @@ class ClientHandler implements Runnable {
     ClientHandler(Socket c) { this.client = c; }
 
     public void run() {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        try (Scanner in = new Scanner(new InputStreamReader(client.getInputStream()));
              PrintWriter out = new PrintWriter(client.getOutputStream(), true)) {
 
-            String urlString = in.readLine();
-            URL url = new URL(urlString);
+            String urlString = in.nextLine();
+            URL url =URI.create(urlString).toURL();
             BufferedReader web = new BufferedReader(new InputStreamReader(url.openStream()));
             String line;
             while ((line = web.readLine()) != null)
