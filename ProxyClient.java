@@ -1,31 +1,37 @@
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProxyClient {
+
     public static void main(String[] args) throws IOException {
+
         Socket socket = new Socket("localhost", 8080);
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        Scanner in = new Scanner(new InputStreamReader(socket.getInputStream()));
+        Scanner in = new Scanner(socket.getInputStream());
 
         String url = "https://example.com";
         out.println(url);
 
-        StringBuilder sb = new StringBuilder();
-        while (in.hasNextLine()){ 
-            String line=in.nextLine();
-            sb.append(line).append("\n");
+        StringBuilder page = new StringBuilder();
+        while (in.hasNextLine()) {
+            page.append(in.nextLine()).append("\n");
         }
 
-        File dir=new File("downloads");
-        if(!dir.exists()) dir.mkdir();
+        String filename = url.replaceAll("https?://", "")
+                             .replaceAll("[/:]", "_") +
+                            "_"+ System.currentTimeMillis()+
+                             ".html";
 
-        String filename = url.replaceAll("https?://", "").replaceAll("[/:]", "_") + ".html";
+        File dir = new File("downloads");
+        if (!dir.exists()) dir.mkdir();
+
         FileWriter writer = new FileWriter("downloads/" + filename);
-        writer.write(sb.toString());
+        writer.write(page.toString());
         writer.close();
+
+        System.out.println("Saved file: " + filename);
+
         socket.close();
-        System.out.println("Saved " + filename);
     }
 }
-

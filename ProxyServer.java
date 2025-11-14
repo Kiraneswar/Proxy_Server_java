@@ -1,37 +1,22 @@
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
+import java.util.concurrent.*;
 
 public class ProxyServer {
+
+    private static final int THREAD_POOL_SIZE = 20;
+
     public static void main(String[] args) throws IOException {
+
+        ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         ServerSocket server = new ServerSocket(8080);
-        System.out.println("Proxy server running on port 8080...");
+
+        System.out.println("Proxy Server running on port 8080...");
+        System.out.println("Thread pool size: " + THREAD_POOL_SIZE);
+
         while (true) {
             Socket client = server.accept();
-            new Thread(new ClientHandler(client)).start();
+            pool.execute(new ClientHandler(client));
         }
     }
 }
-
-class ClientHandler implements Runnable {
-    private Socket client;
-    ClientHandler(Socket c) { this.client = c; }
-
-    public void run() {
-        try (Scanner in = new Scanner(new InputStreamReader(client.getInputStream()));
-             PrintWriter out = new PrintWriter(client.getOutputStream(), true)) {
-
-            String urlString = in.nextLine();
-            URL url =URI.create(urlString).toURL();
-            BufferedReader web = new BufferedReader(new InputStreamReader(url.openStream()));
-            String line;
-            while ((line = web.readLine()) != null)
-                out.println(line);
-            web.close();
-
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-}
-
