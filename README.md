@@ -105,12 +105,3 @@ downloads/<unique_filename>.html
 Developed as part of the **Operating Systems Course Project**  
 for **B.Tech – 5th Semester**.
 
-Contributors:  
-- *Your Name Here*  
-- *Your Teammates (if any)*  
-
-Faculty / Course:  
-Department of Computer Science & Engineering  
-Operating Systems Laboratory
-
----
