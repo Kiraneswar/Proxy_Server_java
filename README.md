@@ -1,48 +1,39 @@
-🚀 Multi-Threaded Proxy Server & Client
+# 🖥️ Multi-Threaded Proxy Server & Client
 
-A multithreaded HTTP Proxy Server implemented using Java ThreadPoolExecutor, with a client that sends URL requests, receives fetched HTML content, and saves it locally.
-A Multi-Client Launcher enables parallel execution of multiple clients to simulate concurrent load.
+A multi-threaded HTTP proxy server built using Java’s ThreadPoolExecutor.  
+The client sends URL requests, receives HTML content from the server, and saves each response as a uniquely named HTML file.  
+A MultiClientLauncher is provided to simulate multiple parallel clients for concurrency testing.
 
-🧩 Features
-✔ Multi-Threaded Proxy Server
+---
 
-Uses ThreadPoolExecutor to efficiently handle multiple requests.
+## 📌 Project Overview
 
-Spawns a separate thread for each incoming client connection.
+This project demonstrates key Operating Systems concepts:
 
-Fetches remote webpage contents using Java’s URL.openStream().
+- Multi-threading  
+- Thread pooling  
+- Client–Server architecture  
+- Socket communication  
+- Concurrent execution of multiple tasks  
 
-Serves multiple clients concurrently.
+The proxy server handles many simultaneous URL requests using a fixed-size ThreadPoolExecutor.
 
-✔ Proxy Client
+---
 
-Connects to proxy server via TCP socket.
+## ⚙️ Features
 
-Sends URL to fetch.
+- Multi-threaded Proxy Server  
+- Thread Pool using Executors.newFixedThreadPool()  
+- Concurrent handling of multiple clients  
+- Automatic saving of fetched HTML content  
+- Stress-testing using MultiClientLauncher  
+- Unique file generation using timestamps  
 
-Receives HTML response from server.
+---
 
-Saves output as a unique HTML file inside /downloads.
+## 📁 Project Structure
 
-✔ Multi-Client Launcher
-
-Automatically spawns any number of clients (10, 20, 100…).
-
-Perfect for stress-testing and demonstrating concurrency.
-
-✔ Thread Pool Visualization
-
-Real-time console logs show:
-active threads, thread names, handling URL, etc.
-
-🛠️ Technologies Used
-Component	Technology
-Programming Language	Java 17+
-Concurrency Model	ThreadPoolExecutor
-Networking	Java Sockets
-File I/O	Java FileWriter
-Architecture	Client–Server Model
-📂 Project Structure
+```
 /proxy_server/
 │
 ├── ProxyServer.java
@@ -50,103 +41,76 @@ Architecture	Client–Server Model
 ├── ProxyClient.java
 ├── MultiClientLauncher.java
 │
-└── /downloads/       # Stores saved HTML files
+└── /downloads/
+```
 
-⚙️ How It Works
-▶ 1. Run the Multi-Threaded Proxy Server
-javac ProxyServer.java ClientHandler.java
+---
+
+## ▶️ Running the Project
+
+### 1. Compile All Java Files
+
+```
+javac ProxyServer.java ClientHandler.java ProxyClient.java MultiClientLauncher.java
+```
+
+### 2. Start the Proxy Server
+
+```
 java ProxyServer
+```
 
+### 3. Run a Single Client
 
-Server Output Example:
-
-Proxy Server running on port 8080...
-Thread pool size: 20
-pool-1-thread-3 handling request...
-pool-1-thread-7 handling request...
-
-▶ 2. Run the Client (single request)
-javac ProxyClient.java
+```
 java ProxyClient
+```
 
+### 4. Run Multiple Clients
 
-Client Output:
-
-Saved file: example.com_1731572005123.html
-
-
-HTML is saved in:
-
-downloads/example.com_<timestamp>.html
-
-▶ 3. Run Multiple Clients Automatically
-javac MultiClientLauncher.java ProxyClient.java
+```
 java MultiClientLauncher
+```
 
+All received HTML pages will be saved inside:
 
-This will launch 20+ clients concurrently (configurable).
+```
+downloads/<unique_filename>.html
+```
 
-Example:
+---
 
-Launching 20 clients...
-Client 1 saved file example.com_1731573005121.html
-Client 2 saved file example.com_1731573005129.html
-...
+## 🔧 Technologies Used
 
-🧵 Thread Pool Overview
+- Java 17+  
+- ThreadPoolExecutor  
+- Java Sockets  
+- FileWriter  
+- TCP Networking  
 
-The server uses:
+---
 
-ExecutorService pool = Executors.newFixedThreadPool(20);
+## 🧵 How It Works (Summary)
 
+1. Client connects to server  
+2. Sends a URL  
+3. Server fetches data from remote website  
+4. Server streams HTML back to client  
+5. Client saves output in `/downloads` with a timestamp  
 
-Meaning:
+---
 
-Max 20 threads working in parallel.
+## 🏆 Team & Credits
 
-Extra requests wait in queue.
+Developed as part of the **Operating Systems Course Project**  
+for **B.Tech – 5th Semester**.
 
-Efficient CPU usage.
+Contributors:  
+- *Your Name Here*  
+- *Your Teammates (if any)*  
 
-Prevents creating unlimited threads.
+Faculty / Course:  
+Department of Computer Science & Engineering  
+Operating Systems Laboratory
 
-Logged metrics:
-
-Active threads
-
-Thread name
-
-Handling URL
-
-Example:
-
-[pool-1-thread-4] Handling URL: https://example.com
-
-💾 HTML Saving Logic
-
-Each downloaded file uses a unique name:
-
-example.com_<timestamp>.html
-
-
-This avoids overwriting when many clients request the same URL.
-
-🔬 Testing Scenarios
-✔ Stress test with 100 clients
-
-Change in MultiClientLauncher.java:
-
-int clientCount = 100;
-
-✔ Test thread pool saturation
-
-Set pool size to small number:
-
-private static final int THREAD_POOL_SIZE = 5;
-
-
-Watch how tasks queue up!
-
-✔ Validate HTML saved correctly
-
-Open /downloads folder and inspect all generated .html files.
+---
